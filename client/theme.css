@@ -1,0 +1,89 @@
+body {
+  padding-top: 70px;
+  padding-bottom: 30px;
+}
+
+.theme-dropdown .dropdown-menu {
+  position: static;
+  display: block;
+  margin-bottom: 20px;
+}
+
+.theme-showcase > p > .btn {
+  margin: 5px 0;
+}
+
+.theme-showcase .navbar .container {
+  width: auto;
+}
+
+.jumbotron {
+  background-image: url("http://www.stantonlanes.com/wp-content/uploads/2014/11/Dollarphotoclub_436926891-e1415924052303.jpg");
+}
+
+h1 {
+  text-shadow:1px 1px 0 #fff,
+  -1px -1px 0 #fff,
+  1px -1px 0 #fff,
+  -1px 1px 0 #fff,
+  0px 1px 0 #fff,
+  1px 0px 0 #fff,
+  0px -1px 0 #fff,
+  -1px 0px 0 #fff,
+  /*4px 4px 3px #000;*/
+}
+
+h4 {
+  margin-top: 6px !important;
+  margin-bottom: 0px !important;
+}
+
+.scorebox {
+  outline: solid black 2px; 
+  margin: 3px;
+  padding-left: 2px !important;
+  padding-right: 2px !important;
+  margin-top: 8px !important;
+}
+
+.player {
+  
+}
+
+.space {
+  height: 30px;
+}
+
+.points {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+}
+
+.dropdown {
+  margin-top: 0px !important;
+}
+
+.drop-button {
+  margin-top: 26px;
+}
+
+.current-round {
+  /*outline: dotted black 2px;*/
+  background: lightgreen;
+}
+
+.current-roll {
+  background-color:lightblue;
+}
+
+.strike {
+  outline: solid red 2px;;
+}
+
+.spare {
+  outline: solid green 2px;;
+}
+
+.score-button {
+  margin-left: 20px;
+}

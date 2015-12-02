@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- <link rel="icon" href="../../favicon.ico"> -->
+
+    <title>Bowling for Zebras</title>
+
+    <script src="./node_modules/mithril/mithril.min.js"></script>
+
+    <!-- Bootstrap core CSS -->
+    <link href="./node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap theme -->
+    <link href="./node_modules/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet">
+    <!-- Custom styles -->
+    <link href="./client/theme.css" rel="stylesheet">
+  </head>
+
+  <body role="document">
+
+    <script>function alertPins(){
+      var e = document.getElementById("pins_dropdown"); 
+      var pins = e.options[e.selectedIndex].value; 
+      alert('Pins knocked down: ' + pins);
+    }
+    </script>
+
+    <div class="container" role="main">
+
+      <div class="jumbotron">
+        <img src="http://www.zebrapen.com/wp-content/themes/zebra/images/zen/ZenFooter.png" height="250px"/>
+        <!-- <h1>Zebra Bowling!</h1> -->
+      </div>
+
+      <div class="container">
+        <div class="row">
+          <h2 class="col-md-4">Next Roll: John</h2> 
+        </div>
+        <div class="row">
+          <h2 class="col-md-4">Pins Knocked Down: </h2>
+          <div class="col-md-4 dropdown">
+            <select name="pins" id="pins_dropdown">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>
+          <button type="button" onclick="alertPins()">SCORE!</button>
+          </div>
+        </div>
+      </div> 
+
+      <div class="row space">
+      </div>
+  
+      <div class="row player">
+        <div class="col-md-1">
+          <h4>John</h4>
+          <p>Total: 106</p>
+        </div>
+        <div class="col-md-1 scorebox">
+          <p class="col-sm-3 points col-sm-offset-2"> 4</p>
+          <p class="col-sm-3 points"> 6</p>
+          <p class="col-sm-3 points"> 4</p>
+          <p class="col-sm-10 col-sm-offset-1 points"><b> Total: 14</b></p>
+        </div>
+        <div class="col-md-1 scorebox">
+          <p class="col-sm-3 points col-sm-offset-2"> 4</p>
+          <p class="col-sm-3 points"> 6</p>
+          <p class="col-sm-3 points"> 4</p>
+          <p class="col-sm-10 col-sm-offset-1 points"><b> Total: 14</b></p>
+        </div>
+        <div class="col-md-1 scorebox">
+          <p class="col-sm-3 points col-sm-offset-2"> 4</p>
+          <p class="col-sm-3 points"> 6</p>
+          <p class="col-sm-3 points"> 4</p>
+          <p class="col-sm-10 col-sm-offset-1 points"><b> Total: 14</b></p>
+        </div>
+        <div class="col-md-1 scorebox">
+          <p class="col-sm-3 points col-sm-offset-2"> 4</p>
+          <p class="col-sm-3 points"> 6</p>
+          <p class="col-sm-3 points"> 4</p>
+          <p class="col-sm-10 col-sm-offset-1 points"><b> Total: 14</b></p>
+        </div>
+        <div class="col-md-1 scorebox">
+          <p class="col-sm-3 points col-sm-offset-2"> 4</p>
+          <p class="col-sm-3 points"> 6</p>
+          <p class="col-sm-3 points"> 10</p>
+          <p class="col-sm-10 col-sm-offset-1 points"><b> Total: 20</b></p>
+        </div>
+        <div class="col-md-1 scorebox">
+          <p class="col-sm-3 points col-sm-offset-2"> 10</p>
+          <p class="col-sm-3 points"> 10</p>
+          <p class="col-sm-3 points"> ?</p>
+          <p class="col-sm-10 col-sm-offset-1 points"><b> Total: 20 </b></p>
+        </div>
+        <div class="col-md-1 scorebox">
+          <p class="col-sm-3 points col-sm-offset-2"> 10</p>
+          <p class="col-sm-3 points"> ?</p>
+          <p class="col-sm-3 points"> ?</p>
+          <p class="col-sm-10 col-sm-offset-1 points"><b> Total: 10 </b></p>
+        </div>
+        <div class="col-md-1 scorebox">
+          <p class="col-sm-3 points col-sm-offset-2"> -</p>
+          <p class="col-sm-3 points"> -</p>
+          <p class="col-sm-3 points"> -</p>
+          <p class="col-sm-10 col-sm-offset-1 points"><b> Total: 0</b></p>
+        </div>
+        <div class="col-md-1 scorebox">
+          <p class="col-sm-3 points col-sm-offset-2"> -</p>
+          <p class="col-sm-3 points"> -</p>
+          <p class="col-sm-3 points"> -</p>
+          <p class="col-sm-10 col-sm-offset-1 points"><b> Total: 0</b></p>
+        </div>
+        <div class="col-md-1 scorebox">
+          <p class="col-sm-3 points col-sm-offset-2"> -</p>
+          <p class="col-sm-3 points"> -</p>
+          <p class="col-sm-3 points"> -</p>
+          <p class="col-sm-10 col-sm-offset-1 points"><b> Total: 0</b></p>
+        </div>
+      </div>
+
+      <div class="row player">
+        <div class="col-md-1">
+          <h4>Sarah</h4>
+          <p>Total: 79</p>
+        </div>
+        <div class="col-md-1 scorebox">
+          <p class="col-sm-3 points col-sm-offset-2"> 4</p>
+          <p class="col-sm-3 points"> 6</p>
+          <p class="col-sm-3 points"> 4</p>
+          <p class="col-sm-10 col-sm-offset-1 points"><b> Total: 14</b></p>
+        </div>
+        <div class="col-md-1 scorebox">
+          <p class="col-sm-3 points col-sm-offset-2"> 4</p>
+          <p class="col-sm-3 points"> 6</p>
+          <p class="col-sm-3 points"> 4</p>
+          <p class="col-sm-10 col-sm-offset-1 points"><b> Total: 14</b></p>
+        </div>
+        <div class="col-md-1 scorebox">
+          <p class="col-sm-3 points col-sm-offset-2"> 4</p>
+          <p class="col-sm-3 points"> 6</p>
+          <p class="col-sm-3 points"> 4</p>
+          <p class="col-sm-10 col-sm-offset-1 points"><b> Total: 14</b></p>
+        </div>
+        <div class="col-md-1 scorebox">
+          <p class="col-sm-3 points col-sm-offset-2"> 4</p>
+          <p class="col-sm-3 points"> 6</p>
+          <p class="col-sm-3 points"> 4</p>
+          <p class="col-sm-10 col-sm-offset-1 points"><b> Total: 14</b></p>
+        </div>
+        <div class="col-md-1 scorebox">
+          <p class="col-sm-3 points col-sm-offset-2"> 4</p>
+          <p class="col-sm-3 points"> 6</p>
+          <p class="col-sm-3 points"> 4</p>
+          <p class="col-sm-10 col-sm-offset-1 points"><b> Total: 14</b></p>
+        </div>
+        <div class="col-md-1 scorebox">
+          <p class="col-sm-3 points col-sm-offset-2"> 4</p>
+          <p class="col-sm-3 points"> 5</p>
+          <p class="col-sm-10 col-sm-offset-1 points"><b> Total: 9</b></p>
+        </div>
+        <div class="col-md-1 scorebox nextroll">
+          <p class="col-sm-3 points col-sm-offset-2"> -</p>
+          <p class="col-sm-3 points"> -</p>
+          <p class="col-sm-3 points"> -</p>
+          <p class="col-sm-10 col-sm-offset-1 points"><b> Total: 0</b></p>
+        </div>
+        <div class="col-md-1 scorebox">
+          <p class="col-sm-3 points col-sm-offset-2"> -</p>
+          <p class="col-sm-3 points"> -</p>
+          <p class="col-sm-3 points"> -</p>
+          <p class="col-sm-10 col-sm-offset-1 points"><b> Total: 0</b></p>
+        </div>
+        <div class="col-md-1 scorebox">
+          <p class="col-sm-3 points col-sm-offset-2"> -</p>
+          <p class="col-sm-3 points"> -</p>
+          <p class="col-sm-3 points"> -</p>
+          <p class="col-sm-10 col-sm-offset-1 points"><b> Total: 0</b></p>
+        </div>
+        <div class="col-md-1 scorebox">
+          <p class="col-sm-3 points col-sm-offset-2"> -</p>
+          <p class="col-sm-3 points"> -</p>
+          <p class="col-sm-3 points"> -</p>
+          <p class="col-sm-10 col-sm-offset-1 points"><b> Total: 0</b></p>
+        </div>
+      </div>
+    
+
+    </div> <!--close main container-->
+
+   <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  </body>
+</html>
