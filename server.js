@@ -3,15 +3,16 @@ var app         = express();
 var bodyParser  = require('body-parser');
 var morgan      = require('morgan');
 var GameModel   = require('./gameModel.js');
+var PORT        = process.env.PORT || 3017;
 
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '/client'));
 app.use('/node_modules', express.static(__dirname + '/node_modules'));
 app.use(morgan('dev'));
 
-var server = app.listen(3017, function () {
+var server = app.listen(PORT, function () {
   var port = server.address().port;
-  console.log('Example app listening at http://localhost:' + port);
+  console.log('Example app listening at ' + PORT + " ...or " + port + " ?");
 });
 
 // takes an array of names, creates a locally stored game object, and returns 
@@ -101,3 +102,4 @@ app.delete('/game/:id', function (req,res) {
     res.status(200).send({message: "game was successfully deleted. Thanks for playing!"}); 
   }
 });
+

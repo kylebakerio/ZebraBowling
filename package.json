@@ -12,5 +12,12 @@
     "score"
   ],
   "author": "kyle baker",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "node_modules/body-parser",
+    "bootstrap": "node_modules/bootstrap",
+    "express": "node_modules/express",
+    "mithril": "node_modules/mithril",
+    "morgan": "node_modules/morgan"
+  }
 }
