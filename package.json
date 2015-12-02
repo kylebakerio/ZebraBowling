@@ -1,9 +1,14 @@
 {
-  "name": "the-sebra",
+  "name": "zebraZebraBowling",
   "version": "1.0.0",
   "description": "code project for the zebra",
+  "engines": {
+    "node": "4.0.0",
+    "npm": "2.14.2"
+  },
   "main": "server.js",
   "scripts": {
+    "preinstall": "echo \"It's pre-install",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
@@ -14,10 +19,10 @@
   "author": "kyle baker",
   "license": "ISC",
   "dependencies": {
-    "body-parser": "node_modules/body-parser",
-    "bootstrap": "node_modules/bootstrap",
-    "express": "node_modules/express",
-    "mithril": "node_modules/mithril",
-    "morgan": "node_modules/morgan"
+    "body-parser": "^1.14.1",
+    "bootstrap": "^3.3.6",
+    "express": "^4.13.3",
+    "mithril": "^0.2.0",
+    "morgan": "^1.6.1"
   }
 }
