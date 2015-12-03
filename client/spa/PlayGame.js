@@ -1,7 +1,7 @@
 (function(){
-  window.PlayGame = {};
+  window.Zebra.Component.PlayGame = {};
 
-  PlayGame.view = function(ctrl){  
+  Zebra.Component.PlayGame.view = function(ctrl){  
     return m("",[
       m(".container", [
         m(".row", 
@@ -34,18 +34,21 @@
         m(".row.space"), 
         m( "", generatePlayerRows(ctrl.game) ),
         m(".row",
-          m("button.col-xs-6.col-sm-3.drop-button.btn.btn-lg.btn-warning.score-button", {onclick: function(){m.route("/newgame")}, type: 'button', "aria-hidden":"true"}, 
+          m("button.col-xs-6.col-sm-3.drop-button.btn.btn-lg.btn-warning.score-button", {onclick: ctrl.deleteGame, type: 'button', "aria-hidden":"true"}, 
             [m("span.glyphicon.glyphicon-remove",{"aria-hidden":"true"}), " New Game"]
           ),
            m("button.col-xs-6.col-sm-3.drop-button.btn.btn-lg.btn-danger.score-button", {onclick: ctrl.randomize, type: 'button', "aria-hidden":"true"}, 
             [m("span.glyphicon.glyphicon-random",{"aria-hidden":"true"}), " Randomize"]
+          ),
+          m("button.col-xs-6.col-sm-3.drop-button.btn.btn-lg.btn-info.score-button", {onclick: function(){location.reload()}, type: 'button', "aria-hidden":"true"}, 
+            [m("span.glyphicon.glyphicon-random",{"aria-hidden":"true"}), " Pause Randomization"]
           )
         ),
       ]),
     ])
   } 
 
-  PlayGame.controller = function(arg){
+  Zebra.Component.PlayGame.controller = function(arg){
     var ctrl  = this;
     ctrl.game = arg;
     ctrl.score = function() {
@@ -58,7 +61,7 @@
         var e = document.getElementById("pins_dropdown"); 
         var pins = Number(e.options[e.selectedIndex].value); 
         update.pins = pins;
-        Model.score(update);
+        Zebra.Model.scoreREST(update);
       }
     }
 
@@ -67,6 +70,12 @@
         $('select').val(Math.round(Math.random() * 10));
         $('.submit').click();
       }, 2000);
+    }
+
+    ctrl.deleteGame = function(){
+      console.log("TRYING TO DELETE GAME");
+      if (confirm("Are you sure you want to end this game?")) 
+        Zebra.Model.deleteGame();
     }
   };
 

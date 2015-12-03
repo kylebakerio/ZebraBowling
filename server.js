@@ -3,7 +3,7 @@ var app         = express();
 var bodyParser  = require('body-parser');
 var morgan      = require('morgan');
 var GameModel   = require('./gameModel.js');
-var PORT        = process.env.PORT || 3017;
+var PORT        = process.env.PORT || 3018;
 
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '/client'));
@@ -12,7 +12,7 @@ app.use(morgan('dev'));
 
 var server = app.listen(PORT, function () {
   var port = server.address().port;
-  console.log('Example app listening at ' + PORT + " ...or " + port + " ?");
+  console.log('Example app listening at ' + PORT);
 });
 
 // takes an array of names, creates a locally stored game object, and returns 
@@ -46,12 +46,13 @@ app.get('/games', function(req,res){
 app.get('/games/:id', function (req,res) {
   var gameID = Number(req.params.id);
   
-  if (typeof GameModel.games[gameID] === "undefined") res.status(404).send({message: "game does not exist"});
+  if (typeof GameModel.games[gameID] === "undefined") 
+    res.status(404).send({message: "game does not exist"});
   else res.send(GameModel.plainScores(gameID));
 })
 
-// Idempotent; takes in data on individual rolls that are explicitly defined in
-// request body (or constructed by client), returns the round that has been update. 
+// Idempotent; takes in data on individual rolls that are contained in 
+// request body (or constructed by client), returns the round that has been updated. 
 // Can create or update, so can be used for 'undo' and 'edit' functions by clients.
 app.put('/games/:id/rolls', function (req, res) {
   // example: req === {gameID: 13, player: "John", round: 0, roll: 0, pins: 12}
@@ -69,7 +70,7 @@ app.put('/games/:id/rolls', function (req, res) {
   }
 })
 
-// Optional truly restful form
+// Optional truly restful form of previous endpoint
 app.put('/games/:id/players/:player/rounds/:round/rolls/:roll', function (req, res) {
   // example: req.body === {pins: 12}
   var gameID = Number(req.params.id);
@@ -78,29 +79,29 @@ app.put('/games/:id/players/:player/rounds/:round/rolls/:roll', function (req, r
   var roll   = Number(req.params.roll);
   var pins   = Number(req.body.pins);
 
-  console.log("Updating, via RESTful endpoint, game:", gameID);
+  console.log("Updating, via RESTful endpoint, game:", gameID, player, round, roll, pins);
 
   if (typeof GameModel.games[gameID] === "undefined") res.status(404).send({message: "Game doesn't exist."});
   else {
-    updateScore(gameID, player, round, roll, req.update.pins);
-    //if (1 /*update score returns error*/) res.send(/*code for invalid request... catch here?*/);
-    res.send({round: games[gameID].players[player].rounds[round], nextRoll: games[gameID].nextRoll});
+    GameModel.updateScore(gameID, player, round, roll, pins);
+    // More error handling could go here.
+    res.send({round: GameModel.games[gameID].players[player].rounds[round], nextRoll: GameModel.games[gameID].nextRoll});
   }
 });
 
-app.delete('/game/:id', function (req,res) {
-  // game is finished, delete. you will need the timeoutID as well, which needs to be saved to the gameID instance (global.clearTimeout(games[gameID].timeoutID))
-  // var gameID = req.body.gameID;
-  var gameID = req.params.id;
-  console.log("Deleted game at index: ", gameID);
-  if (typeof gameID !== "number") res.status(400).send("Not a gameID, please send an valid (numerical) gameID.");
+app.delete('/games/:id', function (req,res) {
+  console.log('trying to delete this game:', GameModel.games[gameID] );
+  var gameID = Number(req.params.id);
+
+  if (isNaN(gameID)) res.status(400).send({message: "Not a gameID, please send an valid (numerical) gameID."});
   else if (typeof GameModel.games[gameID] === "undefined") 
     res.status(404).send({
       message: "Cannot be deleted, because it does not exist. Perhaps you already deleted it? Note: Games are deleted after 6 hours. "
     });
   else {
     GameModel.games[gameID] = undefined;
-    res.status(200).send({message: "game was successfully deleted. Thanks for playing!"}); 
+    console.log("Deleted game at index: ", gameID);
+    res.status(200).send({message: "Game was successfully deleted. Thanks for playing!"}); 
   }
 });
 

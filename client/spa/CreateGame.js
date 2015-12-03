@@ -1,7 +1,7 @@
 (function(){
-  window.CreateGame = {};
+  window.Zebra.Component.CreateGame = {};
 
-  CreateGame.view = function(ctrl){  
+  Zebra.Component.CreateGame.view = function(ctrl){  
     return m(".container",
       m(".row", [
         m("h1", "New Game!"),
@@ -22,7 +22,7 @@
     )
   };
 
-  CreateGame.controller = function(args){
+  Zebra.Component.CreateGame.controller = function(args){
     var ctrl = this;
 
     ctrl.players = [];
@@ -33,7 +33,7 @@
     }
 
     ctrl.startGame = function() {
-      Model.newGame(ctrl.players);
+      Zebra.Model.newGame(ctrl.players);
     }
   };
 })()

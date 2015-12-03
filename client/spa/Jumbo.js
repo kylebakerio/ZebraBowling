@@ -1,7 +1,7 @@
 (function(){
-  window.Jumbo = {};
+  window.Zebra.Component.Jumbo = {};
 
-  Jumbo.view = function(ctrl){  
+  Zebra.Component.Jumbo.view = function(ctrl){  
     return m(".jumbotron.row", [
       m(".col-sm-6", [
         m("img[height='250px'][src='http://www.zebrapen.com/wp-content/themes/zebra/images/zen/ZenFooter.png']")
@@ -10,7 +10,7 @@
     ])
   };
 
-  Jumbo.controller = function(args){
+  Zebra.Component.Jumbo.controller = function(args){
 
   };
 })()
