@@ -25,7 +25,6 @@ app.post('/games', function (req, res) {
   }
   else {
     var gameID = GameModel.new(req.body.names);
-    console.log("Creating game: ", GameModel.games[gameID]);
     res.status(201).send({game: GameModel.plainScores(gameID)});
     // set timer to delete after 6 hours.
     setTimeout(function() {
@@ -46,6 +45,7 @@ app.get('/games', function(req,res){
 // of functions
 app.get('/games/:id', function (req,res) {
   var gameID = Number(req.params.id);
+  
   if (typeof GameModel.games[gameID] === "undefined") res.status(404).send({message: "game does not exist"});
   else res.send(GameModel.plainScores(gameID));
 })
@@ -60,12 +60,11 @@ app.put('/games/:id/rolls', function (req, res) {
   var roll   = req.body.roll;
   var pins   = req.body.pins;
   var gameID = Number(req.params.id);
-  console.log("Updating game at index: ", gameID);
+  
   if (typeof GameModel.games[gameID] === "undefined") 
     res.status(404).send({message: "Game doesn't exist."});
   else {
     GameModel.updateScore(gameID, player, round, roll, pins);
-    console.log("That player's score:", GameModel.plainScores(0).players[player]);
     res.send({round: GameModel.games[gameID].players[player].rounds[round], nextRoll: GameModel.games[gameID].nextRoll});
   }
 })
@@ -78,7 +77,9 @@ app.put('/games/:id/players/:player/rounds/:round/rolls/:roll', function (req, r
   var round  = Number(req.params.round);
   var roll   = Number(req.params.roll);
   var pins   = Number(req.body.pins);
-  console.log("Updating, via truly RESTful endpoint, game:", gameID);
+
+  console.log("Updating, via RESTful endpoint, game:", gameID);
+
   if (typeof GameModel.games[gameID] === "undefined") res.status(404).send({message: "Game doesn't exist."});
   else {
     updateScore(gameID, player, round, roll, req.update.pins);
