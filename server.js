@@ -15,8 +15,10 @@ var server = app.listen(PORT, function () {
   console.log('Example app listening at ' + PORT);
 });
 
-// takes an array of names, creates a locally stored game object, and returns 
-// user-friendly form of that object.
+//
+// Takes an array of names, creates a locally stored game object, and returns 
+// user-friendly form of that object which contains the ID needed to access it.
+//
 app.post('/games', function (req, res) {
   // example expected input: req.body.names === ["John", "Sarah"]
   if ( !Array.isArray(req.body.names) || req.body.names.length < 1 ) {
@@ -33,7 +35,9 @@ app.post('/games', function (req, res) {
   }
 });
 
-// returns all game ID's.
+//
+// Returns all game ID's.
+//
 app.get('/games', function(req,res){
   // could check for credentials, if desired
   var gameIDs = [];
@@ -41,7 +45,7 @@ app.get('/games', function(req,res){
   res.status(200).send(gameIDs);
 })
 
-// takes in an ID and returns the game state object, with integers instead
+// Takes in an ID and returns the game state object, with integers instead
 // of functions
 app.get('/games/:id', function (req,res) {
   var gameID = Number(req.params.id);
@@ -51,9 +55,11 @@ app.get('/games/:id', function (req,res) {
   else res.send(GameModel.plainScores(gameID));
 })
 
+//
 // Idempotent; takes in data on individual rolls that are contained in 
 // request body (or constructed by client), returns the round that has been updated. 
 // Can create or update, so can be used for 'undo' and 'edit' functions by clients.
+//
 app.put('/games/:id/rolls', function (req, res) {
   // example: req === {gameID: 13, player: "John", round: 0, roll: 0, pins: 12}
   var player = req.body.player;
@@ -70,9 +76,11 @@ app.put('/games/:id/rolls', function (req, res) {
   }
 })
 
+//
 // Optional truly restful form of previous endpoint
+//
 app.put('/games/:id/players/:player/rounds/:round/rolls/:roll', function (req, res) {
-  // example: req.body === {pins: 12}
+  // Example: req.body === {pins: 12}
   var gameID = Number(req.params.id);
   var player = Number(req.params.player);
   var round  = Number(req.params.round);
