@@ -27,20 +27,24 @@
         ]),
         m(".clearfix"),
         m(".row", 
-          m("button.col-xs-6.col-sm-2.drop-button.btn.btn-lg.btn-success.score-button.submit", {onclick: ctrl.score, type: 'button', "aria-hidden":"true"}, 
+          m("button.col-xs-6.col-sm-2.drop-button.btn.btn-lg.btn-success.score-button.submit", 
+            {onclick: ctrl.score, type: 'button', "aria-hidden":"true"}, 
             [m("span.glyphicon.glyphicon-ok",{"aria-hidden":"true"}), " SCORE!"]
           )
         ),
         m(".row.space"), 
         m( "", generatePlayerRows(ctrl.game) ),
         m(".row",
-          m("button.col-xs-6.col-sm-3.drop-button.btn.btn-lg.btn-warning.score-button", {onclick: ctrl.deleteGame, type: 'button', "aria-hidden":"true"}, 
+          m("button.col-xs-6.col-sm-3.drop-button.btn.btn-lg.btn-warning.score-button", 
+            {onclick: ctrl.deleteGame, type: 'button', "aria-hidden":"true"}, 
             [m("span.glyphicon.glyphicon-remove",{"aria-hidden":"true"}), " New Game"]
           ),
-           m("button.col-xs-6.col-sm-3.drop-button.btn.btn-lg.btn-danger.score-button", {onclick: ctrl.randomize, type: 'button', "aria-hidden":"true"}, 
+           m("button.col-xs-6.col-sm-3.drop-button.btn.btn-lg.btn-danger.score-button", 
+            {onclick: ctrl.randomize, type: 'button', "aria-hidden":"true"}, 
             [m("span.glyphicon.glyphicon-random",{"aria-hidden":"true"}), " Randomize"]
           ),
-          m("button.col-xs-6.col-sm-3.drop-button.btn.btn-lg.btn-info.score-button", {onclick: function(){location.reload()}, type: 'button', "aria-hidden":"true"}, 
+          m("button.col-xs-6.col-sm-3.drop-button.btn.btn-lg.btn-info.score-button", 
+            {onclick: function(){location.reload()}, type: 'button', "aria-hidden":"true"}, 
             [m("span.glyphicon.glyphicon-random",{"aria-hidden":"true"}), " Pause Randomization"]
           )
         ),
@@ -117,9 +121,12 @@
         );
 
         var scoreBoxClass = ".col-xs-4.col-sm-1.scorebox"
-        if (round === game.nextRoll.round && player === game.nextRoll.player) scoreBoxClass += ".current-round"; 
-        else if (game.players[player].rounds[round][0] === 10) scoreBoxClass += ".strike"; 
-        else if (game.players[player].rounds[round][0] + game.players[player].rounds[round][1] === 10) scoreBoxClass += ".spare";
+        if (round === game.nextRoll.round && player === game.nextRoll.player) 
+          scoreBoxClass += ".current-round"; 
+        else if (game.players[player].rounds[round][0] === 10) 
+          scoreBoxClass += ".strike"; 
+        else if (game.players[player].rounds[round][0] + game.players[player].rounds[round][1] === 10) 
+          scoreBoxClass += ".spare";
 
         playerRow.push(
           m(scoreBoxClass, scoreBox)
@@ -135,48 +142,3 @@
   }
 
 })()
-
-// example:
-// m(".row.player", [
-//   m(".col-xs-1", [
-//     m("h4", "John"),
-//     m("p", "Total: 106")
-//   ]),
-//   m(".col-xs-1.scorebox", [
-//     m("p.col-xs-3.points.col-xs-offset-2", " 4"),
-//     m("p.col-xs-3.points", " 6"),
-//     m("p.col-xs-3.points", " 4"),
-//     m("p.col-xs-10.col-xs-offset-1.points", [m("b", " Total: 14")])
-//   ])
-// ])
-
-// game = { 
-//   timeoutID: 1234567890,
-//   nextRoll: {gameID: 1, player: 1, round: 2, roll: 0},
-//   players: [
-//     {   // a player
-//       name: "John",
-//       total: 23,
-//       rounds: [
-//         [    // round 1
-//           9, 1, 10
-//         ],
-//         [    // round 2
-//           10, ?, ?
-//         ]
-//       ]
-//     },
-//     {  // another player
-//       name: "Sally",
-//       total: 20,
-//       rounds: [
-//         [
-//           9, 0 
-//         ],
-//         [
-//           3, 7, ?
-//         ]
-//       ]
-//     }
-//   ]
-// }
