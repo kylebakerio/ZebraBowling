@@ -57,29 +57,12 @@ app.get('/games/:id', function (req,res) {
 })
 
 //
-// Idempotent; takes in data on individual rolls that are contained in 
+// RESTful and idempotent; takes in data on individual rolls that are contained in 
 // request body (or constructed by client), returns the round that has been updated. 
 // Can create or update, so can be used for 'undo' and 'edit' functions by clients.
+// HATEOAS / Richardson Maturity Level 3
 //
-app.put('/games/:id/rolls', function (req, res) {
-  // example: req === {gameID: 13, player: "John", round: 0, roll: 0, pins: 12}
-  var player = req.body.player;
-  var round  = req.body.round;
-  var roll   = req.body.roll;
-  var pins   = req.body.pins;
-  var gameID = Number(req.params.id);
-  
-  if (typeof GameModel.games[gameID] === "undefined") 
-    res.status(404).send({message: "Game doesn't exist."});
-  else {
-    GameModel.updateScore(gameID, player, round, roll, pins);
-    res.send({round: GameModel.games[gameID].players[player].rounds[round], nextRoll: GameModel.games[gameID].nextRoll});
-  }
-})
 
-//
-// Optional truly restful form of previous endpoint
-//
 app.put('/games/:id/players/:player/rounds/:round/rolls/:roll', function (req, res) {
   // Example: req.body === {pins: 12}
   var gameID = Number(req.params.id);
@@ -95,8 +78,11 @@ app.put('/games/:id/players/:player/rounds/:round/rolls/:roll', function (req, r
     console.log("Game doesn't exist -- did the server restart, or was client left open too long? Games are temporary.");
   }
   else {
+    console.log("before", {round: GameModel.games[gameID].players[player].rounds[round], nextRoll: GameModel.games[gameID].nextRoll})
+
     GameModel.updateScore(gameID, player, round, roll, pins);
     // More error handling could go here.
+    console.log("after", {round: GameModel.games[gameID].players[player].rounds[round], nextRoll: GameModel.games[gameID].nextRoll})
     res.send({round: GameModel.games[gameID].players[player].rounds[round], nextRoll: GameModel.games[gameID].nextRoll});
   }
 });

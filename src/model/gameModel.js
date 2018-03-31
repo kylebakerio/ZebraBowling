@@ -133,8 +133,15 @@ GameModel.findNextRoll = function (gameID, player, round, roll, pins) {
 
   var nextRoll = {gameID: gameID, gameOver: false};
 
+  // If invalid input
+  if (gameID > games.length-1 || player > games[gameID].players.length-1 ||
+    round > 9 || roll > 2 || pins > 10 || player < 0 || round < 0 || pins < 0 || roll < 0) {
+    return "invalid entry";
+    // further error handling would go here.
+  }
+
   // If special case of final round strike or spare, next roll is a bonus second or third roll.
-  if ( round > 8 && ((games[gameID].players[player].rounds[9][0]() === 10) || 
+  else if ( round > 8 && ((games[gameID].players[player].rounds[9][0]() === 10) || 
     (games[gameID].players[player].rounds[9][0]() + games[gameID].players[player].rounds[9][1]() >= 10)) && roll < 2 ) {
     nextRoll.player = player;
     nextRoll.round  = round;
@@ -149,22 +156,20 @@ GameModel.findNextRoll = function (gameID, player, round, roll, pins) {
     nextRoll.gameOver = true;
   }
 
-  // If invalid input
-  else if (gameID > games.length-1 || player > games[gameID].players.length-1 ||
-    round > 9 || roll > 2 || pins > 10 || player < 0 || round < 0 || pins < 0 || roll < 0) {
-    return "invalid entry";
-    // further error handling would go here.
-  }
-
-  // If end of player's turn OR strike 
+  // If end of player's turn (via 2 rolls, finished spare, or first roll strike)
   else if (roll === 1 || roll === 2 || (roll === 0 && pins === 10)) {
     
+                        // (or only player)
+    var onLastPlayer = games[gameID].players.length === 1 || player === games[gameID].players.length - 1;
+    
     // If currently on last player, next is first player's turn; otherwise, next player
-    nextRoll.player = player === games[gameID].players.length-1 ? 0 : player+1;
+    nextRoll.player = onLastPlayer ? 0 : player+1;
 
     // If currently on last player, starting new round; otherwise, same round
-    nextRoll.round  = player === games[gameID].players.length-1 ? round+1 : round;
-    nextRoll.roll   = 0;
+    nextRoll.round = onLastPlayer ? round+1 : round;
+
+    // In all of these cases, next roll is roll 0
+    nextRoll.roll = 0;
   }
 
   // If first roll of round, and not a strike
@@ -181,7 +186,7 @@ GameModel.findNextRoll = function (gameID, player, round, roll, pins) {
 module.exports = GameModel;
 
 //
-// Sample game data tructure created:
+// Sample game data structure created:
 // (note that it comes prefilled with functions for at least two 
 // rolls per ten rounds per player that return "-", until overwritten)
 //

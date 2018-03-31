@@ -1,6 +1,9 @@
 (function(){
   window.Zebra.Model = {};
 
+  Zebra.Model.Game = m.prop();
+  Zebra.Model.fullAutoRando = m.prop(false);
+
   Zebra.Model.newGame = function (players) {
     console.log("Creating game with " + players);
     m.request({
@@ -11,32 +14,10 @@
     .then(function(res){
       console.log(res);
       localStorage.game = JSON.stringify(res.game);
+      Zebra.Model.Game(res.game)
       m.route("/play");
     });
   };
-
-  Zebra.Model.score = function (nextRoll) {
-    console.log("Rolling: ", nextRoll);
-    m.request({
-      method: 'PUT',
-      url: '/games/'+nextRoll.gameID+"/rolls",
-      data: nextRoll
-    })
-    .then(function(res1){
-      console.log("updated round: ", res1);
-      return m.request({
-        method: 'GET',
-        url: '/games/'+nextRoll.gameID
-      });
-    })
-    .then(function(res2){
-      if (res2.nextRoll.gameOver) alert("Game over! Thanks for playing!");
-      console.log("full game:", res2);
-      console.log("next roll: ", res2.nextRoll);
-      localStorage.game = JSON.stringify(res2);
-      m.route("/play");
-    })
-  }
 
   Zebra.Model.scoreREST = function (nextRoll) {
     console.log("Rolling: ", nextRoll);
@@ -44,14 +25,16 @@
       '/games/'   + nextRoll.gameID +
       '/players/' + nextRoll.player +
       '/rounds/'  + nextRoll.round +
-      '/rolls/'   + nextRoll.roll
-    console.log("reqURL:", reqURL)
+      '/rolls/'   + nextRoll.roll;
 
-    m.request({
+    var reqObj = {
       method: 'PUT',
       url: reqURL,
       data: {pins: nextRoll.pins}
-    })
+    };
+    console.log("reqObj:", reqObj);
+
+    m.request(reqObj)
     .then(function(res1){
       console.log("updated round: ", res1);
       return m.request({
@@ -60,11 +43,16 @@
       });
     })
     .then(function(res2){
-      if (res2.nextRoll.gameOver) alert("Game over! Thanks for playing!");
       console.log("full game:", res2);
       console.log("next roll: ", res2.nextRoll);
       localStorage.game = JSON.stringify(res2);
-      m.route("/play");
+      Zebra.Model.Game(res2);
+      if (res2.nextRoll.gameOver) alert("Game over! Thanks for playing!");
+      else if (Zebra.Model.fullAutoRando()) {
+        var update = res2.nextRoll;
+        update.pins = Math.round(Math.random() * 10);
+        setTimeout(() => Zebra.Model.scoreREST(update), 500);
+      }
     });
   };
 
@@ -79,7 +67,6 @@
       console.log(res1);
       m.route("/newgame");
     });
-  }
+  };
 
-}())
-
+}());

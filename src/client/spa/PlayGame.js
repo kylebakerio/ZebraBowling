@@ -2,10 +2,11 @@
   window.Zebra.Component.PlayGame = {};
 
   Zebra.Component.PlayGame.view = function(ctrl){  
+    console.log(ctrl.game())
     return m("",[
       m(".container", [
         m(".row", 
-          m("h2.col-xs-8.col-sm-4.col-md-2", "Next Roll: " + ctrl.game.players[ctrl.game.nextRoll.player].name)
+          m("h2.col-xs-8.col-sm-4.col-md-2", "Next Roll: " + Zebra.Model.Game().players[Zebra.Model.Game().nextRoll.player].name)
         ),
         m(".row", [
           m("p.col-xs-8.col-sm-4.col-md-2", "Pins Knocked Down: "),
@@ -33,7 +34,7 @@
           )
         ),
         m(".row.space"), 
-        m( "", generatePlayerRows(ctrl.game) ),
+        m( "", generatePlayerRows(Zebra.Model.Game()) ),
         m(".row",
           m("button.col-xs-6.col-sm-3.drop-button.btn.btn-lg.btn-warning.score-button", 
             {onclick: ctrl.deleteGame, type: 'button', "aria-hidden":"true"}, 
@@ -44,7 +45,7 @@
             [m("span.glyphicon.glyphicon-random",{"aria-hidden":"true"}), " Randomize"]
           ),
           m("button.col-xs-6.col-sm-3.drop-button.btn.btn-lg.btn-info.score-button", 
-            {onclick: () => clearInterval(window.randomizer), type: 'button', "aria-hidden":"true"}, 
+            {onclick: () => Zebra.Model.fullAutoRando(false), type: 'button', "aria-hidden":"true"}, 
             [m("span.glyphicon.glyphicon-random",{"aria-hidden":"true"}), " Pause Randomization"]
           )
         ),
@@ -52,49 +53,30 @@
     ])
   } 
 
-  Zebra.Component.PlayGame.controller = function(arg){
+  Zebra.Component.PlayGame.controller = function(){
     var ctrl  = this;
-    ctrl.game = arg;
+    ctrl.game = Zebra.Model.Game;
+
     ctrl.score = function() {
-      var update = ctrl.game.nextRoll;
-      if (update.gameOver) {
-        clearInterval(window.randomizer);
-        alert("Game over! Thanks for playing!");
-        return;
-      }
-      else {
-        var e = document.getElementById("pins_dropdown"); 
-        var pins = Number(e.options[e.selectedIndex].value); 
-        update.pins = pins;
-        Zebra.Model.scoreREST(update);
-      }
+      var update = ctrl.game().nextRoll;
+      var elem = document.getElementById("pins_dropdown"); 
+      update.pins = Number(elem.options[elem.selectedIndex].value); 
+      Zebra.Model.scoreREST(update);
     };
 
     ctrl.randomize = function(){
-      var delay = 1500;
-
-      window.randomizer = setInterval(function(){
-        if (ctrl.game.nextRoll.gameOver) {
-          console.log("game over")
-          clearInterval(window.randomizer);
-        }
-        else {
-          console.log("game over?", ctrl.game.nextRoll.gameOver);
-          $('select').val(Math.round(Math.random() * 10));
-          $('.submit').click();
-        }
-      }, delay);
+      Zebra.Model.fullAutoRando(true);
+      ctrl.score();
     };
 
     ctrl.deleteGame = function(){
-      console.log("TRYING TO DELETE GAME");
       if (confirm("Are you sure you want to end this game?")) {
         Zebra.Model.deleteGame();
       }
     }
   };
 
-  function generatePlayerRows(game){
+  function generatePlayerRows(game=Zebra.Model.Game()){
     var playerRows = [];
 
     for (var player = 0; player < game.players.length; player++) {
@@ -111,7 +93,7 @@
         var subtotal = 0;
 
         for (var roll = 0; roll < game.players[player].rounds[round].length; roll++) {
-          if (round === game.nextRoll.round && player === game.nextRoll.player && roll === game.nextRoll.roll) {
+          if (!game.nextRoll.gameOver && round === game.nextRoll.round && player === game.nextRoll.player && roll === game.nextRoll.roll) {
             var rollClass = "b.points.current-roll.col-xs-3";
           }
 
@@ -132,7 +114,7 @@
         );
 
         var scoreBoxClass = ".col-xs-4.col-sm-1.scorebox"
-        if (round === game.nextRoll.round && player === game.nextRoll.player) 
+        if (!game.nextRoll.gameOver && round === game.nextRoll.round && player === game.nextRoll.player) 
           scoreBoxClass += ".current-round"; 
         else if (game.players[player].rounds[round][0] === 10) 
           scoreBoxClass += ".strike"; 
