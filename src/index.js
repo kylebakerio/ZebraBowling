@@ -2,17 +2,18 @@ var express     = require('express');
 var app         = express();
 var bodyParser  = require('body-parser');
 var morgan      = require('morgan');
-var GameModel   = require('./gameModel.js');
+var GameModel   = require('./model/gameModel.js');
+var path        = require('path');
 var PORT        = process.env.PORT || 3018;
 
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '/client'));
-app.use('/node_modules', express.static(__dirname + '/node_modules'));
+app.use('/node_modules', express.static(path.join(__dirname, '../node_modules')));
 app.use(morgan('dev'));
 
 var server = app.listen(PORT, function () {
   var port = server.address().port;
-  console.log('Example app listening at ' + PORT);
+  console.log('Zebra Bowling Service Online @ ' + PORT);
 });
 
 //
@@ -101,7 +102,7 @@ app.delete('/games/:id', function (req,res) {
   console.log('trying to delete this game:', GameModel.games[gameID] );
   var gameID = Number(req.params.id);
 
-  if (isNaN(gameID)) res.status(400).send({message: "Not a gameID, please send an valid (numerical) gameID."});
+  if (isNaN(gameID)) res.status(400).send({message: "Not a gameID, please send a valid (numerical) gameID."});
   else if (typeof GameModel.games[gameID] === "undefined") 
     res.status(404).send({
       message: "Cannot be deleted, because it does not exist. Perhaps you already deleted it? Note: Games are deleted after 6 hours. "
@@ -112,4 +113,3 @@ app.delete('/games/:id', function (req,res) {
     res.status(200).send({message: "Game was successfully deleted. Thanks for playing!"}); 
   }
 });
-
