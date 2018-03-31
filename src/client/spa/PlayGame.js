@@ -44,7 +44,7 @@
             [m("span.glyphicon.glyphicon-random",{"aria-hidden":"true"}), " Randomize"]
           ),
           m("button.col-xs-6.col-sm-3.drop-button.btn.btn-lg.btn-info.score-button", 
-            {onclick: function(){location.reload()}, type: 'button', "aria-hidden":"true"}, 
+            {onclick: () => clearInterval(window.randomizer), type: 'button', "aria-hidden":"true"}, 
             [m("span.glyphicon.glyphicon-random",{"aria-hidden":"true"}), " Pause Randomization"]
           )
         ),
@@ -58,6 +58,7 @@
     ctrl.score = function() {
       var update = ctrl.game.nextRoll;
       if (update.gameOver) {
+        clearInterval(window.randomizer);
         alert("Game over! Thanks for playing!");
         return;
       }
@@ -67,19 +68,29 @@
         update.pins = pins;
         Zebra.Model.scoreREST(update);
       }
-    }
+    };
 
     ctrl.randomize = function(){
-      setInterval(function(){
-        $('select').val(Math.round(Math.random() * 10));
-        $('.submit').click();
-      }, 2000);
-    }
+      var delay = 1500;
+
+      window.randomizer = setInterval(function(){
+        if (ctrl.game.nextRoll.gameOver) {
+          console.log("game over")
+          clearInterval(window.randomizer);
+        }
+        else {
+          console.log("game over?", ctrl.game.nextRoll.gameOver);
+          $('select').val(Math.round(Math.random() * 10));
+          $('.submit').click();
+        }
+      }, delay);
+    };
 
     ctrl.deleteGame = function(){
       console.log("TRYING TO DELETE GAME");
-      if (confirm("Are you sure you want to end this game?")) 
+      if (confirm("Are you sure you want to end this game?")) {
         Zebra.Model.deleteGame();
+      }
     }
   };
 

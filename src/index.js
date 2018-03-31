@@ -90,7 +90,10 @@ app.put('/games/:id/players/:player/rounds/:round/rolls/:roll', function (req, r
 
   console.log("Updating, via RESTful endpoint, game:", gameID, player, round, roll, pins);
 
-  if (typeof GameModel.games[gameID] === "undefined") res.status(404).send({message: "Game doesn't exist."});
+  if (typeof GameModel.games[gameID] === "undefined") {
+    res.status(404).send({message: "Game doesn't exist."});
+    console.log("Game doesn't exist -- did the server restart, or was client left open too long? Games are temporary.");
+  }
   else {
     GameModel.updateScore(gameID, player, round, roll, pins);
     // More error handling could go here.
@@ -102,14 +105,14 @@ app.delete('/games/:id', function (req,res) {
   console.log('trying to delete this game:', GameModel.games[gameID] );
   var gameID = Number(req.params.id);
 
-  if (isNaN(gameID)) res.status(400).send({message: "Not a gameID, please send a valid (numerical) gameID."});
-  else if (typeof GameModel.games[gameID] === "undefined") 
-    res.status(404).send({
-      message: "Cannot be deleted, because it does not exist. Perhaps you already deleted it? Note: Games are deleted after 6 hours. "
-    });
-  else {
-    GameModel.games[gameID] = undefined;
-    console.log("Deleted game at index: ", gameID);
-    res.status(200).send({message: "Game was successfully deleted. Thanks for playing!"}); 
-  }
+  // if (isNaN(gameID)) res.status(400).send({message: "Not a gameID, please send a valid (numerical) gameID."});
+  // else if (typeof GameModel.games[gameID] === "undefined") 
+  //   res.status(404).send({
+  //     message: "Cannot be deleted, because it does not exist. Perhaps you already deleted it? Note: Games are deleted after 6 hours. "
+  //   });
+  // else {
+  GameModel.games[gameID] = undefined;
+  console.log("Deleted game at index: ", gameID);
+  res.status(200).send({message: "Game was successfully deleted. Thanks for playing!"}); 
+  // }
 });

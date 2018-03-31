@@ -181,7 +181,7 @@ GameModel.findNextRoll = function (gameID, player, round, roll, pins) {
 module.exports = GameModel;
 
 //
-// Sample data data tructure created:
+// Sample game data tructure created:
 // (note that it comes prefilled with functions for at least two 
 // rolls per ten rounds per player that return "-", until overwritten)
 //
